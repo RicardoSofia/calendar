@@ -1,0 +1,11 @@
+com\api\calendar\testapi\functionaltest\ApacheHttpConnector$ConnectionPool.class
+com\api\calendar\testapi\test\PostUserTimeslotsFT.class
+com\api\calendar\testapi\actions\UserActions.class
+com\api\calendar\testapi\functionaltest\ApacheHttpConnector.class
+com\api\calendar\testapi\util\UserEndpointEnum.class
+com\api\calendar\testapi\connector\PostPutUsersConnector.class
+com\api\calendar\testapi\test\TestSourceUsers.class
+com\api\calendar\testapi\util\ObjectMappers.class
+com\api\calendar\testapi\test\GetUserTimeSlotsFT.class
+com\api\calendar\testapi\connector\GetUsersConnector.class
+com\api\calendar\security\BasicConfigurationIntegrationTest.class

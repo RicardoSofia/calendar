@@ -1,0 +1,12 @@
+-------------------------------------------------------------------------------
+Test set: com.api.calendar.security.BasicConfigurationIntegrationTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 0, Errors: 2, Skipped: 0, Time elapsed: 9.981 s <<< FAILURE! - in com.api.calendar.security.BasicConfigurationIntegrationTest
+whenLoggedUserRequestsHomePage_ThenSuccess  Time elapsed: 0.343 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.api.calendar.security.BasicConfigurationIntegrationTest.whenLoggedUserRequestsHomePage_ThenSuccess(BasicConfigurationIntegrationTest.java:38)
+
+whenUserWithWrongCredentials_thenUnauthorizedPage  Time elapsed: 0.01 s  <<< ERROR!
+java.lang.NullPointerException
+	at com.api.calendar.security.BasicConfigurationIntegrationTest.whenUserWithWrongCredentials_thenUnauthorizedPage(BasicConfigurationIntegrationTest.java:50)
+
