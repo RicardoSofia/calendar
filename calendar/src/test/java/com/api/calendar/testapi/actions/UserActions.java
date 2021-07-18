@@ -73,8 +73,6 @@ public class UserActions extends TestSourceUsers {
 
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) return null;
 
-
-
         return ApacheHttpConnector.readResponse(httpResponse, List.class);
     }
 
@@ -97,7 +95,7 @@ public class UserActions extends TestSourceUsers {
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) throw new IOException("Error status" + expectedStatus);
     }
 
-    public static void updateInterviewerWithTimeslotsById(Integer userId, List<CalendarDTO> calendarDto, Integer expectedStatus)
+    public static UserDTO updateInterviewerWithTimeslotsById(Integer userId, List<CalendarDTO> calendarDto, Integer expectedStatus)
         throws IOException {
 
         HttpResponse httpResponse = PostPutUsersConnector
@@ -105,6 +103,9 @@ public class UserActions extends TestSourceUsers {
         ApacheHttpConnector.validateStatus(expectedStatus, httpResponse);
 
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) throw new IOException("Error status" + expectedStatus);
+
+        return ApacheHttpConnector.readResponse(httpResponse, UserDTO.class);
+
     }
 
     public static void sendCandidateTimeslot(Integer userId, UserDTO userDTO, Integer expectedStatus)

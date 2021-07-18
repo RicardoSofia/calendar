@@ -19,18 +19,22 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
 
     private UserActions userActions = new UserActions();
 
+    private static UserDTO userInesTest;
+    private static UserDTO userIngridTest;
+    private static UserDTO userCandidateTest;
+
     @BeforeAll
     public static void createUsersFT() throws Exception {
         UserActions.clearUsers(200);
-        UserActions.createUser(userInesDTO, 200);
-        UserActions.createUser(userIngridDTO, 200);
-        UserActions.createUser(userCandidate, 200);
+        userInesTest = UserActions.createUser(userInesDTO, 200);
+        userIngridTest = UserActions.createUser(userIngridDTO, 200);
+        userCandidateTest = UserActions.createUser(userCandidateDTO, 200);
     }
 
     @Test
     public void getExistingCandidateFT() throws Exception {
 
-        UserDTO candidate = userActions.getCandidate(3, 200);
+        UserDTO candidate = userActions.getCandidate(userCandidateTest.getId(), 200);
 
         Assertions.assertEquals("candidate", candidate.getUserName());
     }
@@ -38,7 +42,7 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
     @Test
     public void getCandidateBookedTimeslotFT() throws Exception {
 
-        CalendarDTO candidateBookedTimeslot = userActions.getCandidateBookedTimeslot(3, 200);
+        CalendarDTO candidateBookedTimeslot = userActions.getCandidateBookedTimeslot(userCandidateTest.getId(), 200);
 
         Assertions.assertNotNull(candidateBookedTimeslot);
 
@@ -47,7 +51,7 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
     @Test
     public void getExistingInterviewerFT() throws Exception {
 
-        UserDTO interviewer = userActions.getInterviewer(1, 200);
+        UserDTO interviewer = userActions.getInterviewer(userInesTest.getId(), 200);
 
         Assertions.assertEquals("ines", interviewer.getUserName());
     }
@@ -55,7 +59,7 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
     @Test
     public void getInterviewerTimeslotsFT() throws Exception {
 
-        List<CalendarDTO> userAvailableTimeslots = userActions.getInterviewerAvailableTimeslots(1, 200);
+        List<CalendarDTO> userAvailableTimeslots = userActions.getInterviewerAvailableTimeslots(userInesTest.getId(), 200);
 
         Assertions.assertEquals(3, userAvailableTimeslots.size());
 
@@ -63,7 +67,7 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
 
     @Test
     public void getInterviewersCrossedAvaliableTimeslotsFT() throws Exception {
-        List<CalendarDTO> userAvailableTimeslots = userActions.getUsersCrossedAvailableTimeslots(1, 2, 200);
+        List<CalendarDTO> userAvailableTimeslots = userActions.getUsersCrossedAvailableTimeslots(userInesTest.getId(), userIngridTest.getId(), 200);
 
         Assertions.assertEquals(1, userAvailableTimeslots.size());
     }

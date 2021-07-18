@@ -1,10 +1,10 @@
 package com.api.calendar.testapi.test;
 
+import com.api.calendar.dto.CalendarDTO;
 import com.api.calendar.dto.UserDTO;
-import com.api.calendar.entity.UserDb;
 import com.api.calendar.testapi.actions.UserActions;
 import java.io.IOException;
-import org.apache.catalina.User;
+import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
@@ -16,39 +16,51 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 @ExtendWith(SpringExtension.class)
 public class PostUserTimeslotsFT extends TestSourceUsers{
 
-    private static UserDTO userInes;
-    private static UserDTO userIngrid;
-    private static UserDTO userCan;
+    private static UserDTO userInesTest;
+    private static UserDTO userIngridTest;
+    private static UserDTO userCandidateTest;
 
     @BeforeAll
     public static void createUsersFT() throws Exception {
         UserActions.clearUsers(200);
-        userInes = UserActions.createUser(userInesDTO, 200);
-        userIngrid = UserActions.createUser(userIngridDTO, 200);
-        userCan = UserActions.createUser(userCandidate, 200);
+        userInesTest = UserActions.createUser(userInesDTO, 200);
+        userIngridTest = UserActions.createUser(userIngridDTO, 200);
+        userCandidateTest = UserActions.createUser(userCandidateDTO, 200);
     }
 
     @Test
-    public void testUpdateInterviewerFT() throws IOException {
+    void testPostUpdateInterviewerFT() throws IOException {
 
-        UserActions.updateInterviewerWithTimeslots(userInes.getId(), userInes, 200 );
-        UserDTO interviewerUpdated = UserActions.getInterviewer(userInes.getId(), 200);
+        UserActions.updateInterviewerWithTimeslots(userInesTest.getId(), userInesTest, 200 );
+        UserDTO interviewerUpdated = UserActions.getInterviewer(userInesTest.getId(), 200);
 
         Assertions.assertEquals("ines", interviewerUpdated.getUserName());
         Assertions.assertEquals(3, interviewerUpdated.getInterviewCalendar().size());
     }
 
     @Test
-    public void testPostInterviewerFT() throws IOException {
-        UserActions.updateInterviewerWithTimeslotsById(userIngrid.getId(), calendarDtoList, 200);
-        UserDTO interviewer = UserActions.getInterviewer(userIngrid.getId(), 200);
+    void testPutUpdateInterviewerFT() throws IOException {
+        UserDTO userDTO = UserActions
+            .updateInterviewerWithTimeslotsById(userIngridTest.getId(), calendarDtoList, 200);
 
-        Assertions.assertEquals(1, interviewer.getInterviewCalendar().size());
+        Assertions.assertEquals(4, userDTO.getInterviewCalendar().size());
 
     }
 
     @Test
-    public void sendCandidateTimeslotFT() throws IOException {
-        UserActions.sendCandidateTimeslot(3,userCandidate,200);
+    void sendCandidateTimeslotValidTimeslotFT() throws IOException {
+        List<CalendarDTO> usersCrossedAvailableTimeslots = UserActions
+            .getUsersCrossedAvailableTimeslots(userInesTest.getId(), userIngridTest.getId(), 200);
+        if(usersCrossedAvailableTimeslots.size() > 0) {
+            //The candidateDto already has the calendar timeslot
+            UserActions.sendCandidateTimeslot(userCandidateTest.getId(), userCandidateTest,200);
+            UserDTO candidateDto = UserActions.getCandidate(userCandidateTest.getId(), 200);
+
+            List<CalendarDTO> interviewCalendar = candidateDto.getInterviewCalendar();
+            Assertions.assertNotNull(interviewCalendar);
+            Assertions.assertEquals(1, interviewCalendar.size());
+            Assertions.assertEquals(userCandidateDTO.getInterviewCalendar().get(0).getDateTime(),
+                interviewCalendar.get(0).getDateTime());
+        }
     }
 }

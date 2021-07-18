@@ -82,8 +82,7 @@ public class InterviewCalenderController {
     @PutMapping("/interviewer/{interviewerId}/timeslots")
     public ResponseEntity updateInterviewerPut(@PathVariable Integer interviewerId, @RequestBody List<CalendarDTO> calendarDTOList)
         throws NotFoundException {
-        userService.bookUserCalendarSlots(interviewerId, calendarDTOList);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(userService.bookUserCalendarSlots(interviewerId, calendarDTOList));
     }
 
     @PostMapping("/candidate/{candidateId}/timeslots")

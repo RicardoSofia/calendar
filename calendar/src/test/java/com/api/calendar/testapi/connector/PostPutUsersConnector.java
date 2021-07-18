@@ -37,7 +37,7 @@ public class PostPutUsersConnector {
 
     public static HttpResponse postCandidateTimeslot(Integer userId, UserDTO userDto) throws IOException {
         String url = String.format(CANDIDATE_TIMESLOTS.getEndpoint(), userId);
-        return new ApacheHttpConnector().httpPut(url, userDto);
+        return new ApacheHttpConnector().httpPost(url, userDto);
     }
 
 

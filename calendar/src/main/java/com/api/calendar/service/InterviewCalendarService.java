@@ -13,7 +13,7 @@ public interface InterviewCalendarService {
 
     void updateUser(UserDTO userDTO);
 
-    void bookUserCalendarSlots(Integer userId, List<CalendarDTO> calendarDTOList)
+    UserDTO bookUserCalendarSlots(Integer userId, List<CalendarDTO> calendarDTOList)
         throws NotFoundException;
 
     List<CalendarDTO> getUsersCrossedCalendar(Integer interviewerId1, Integer interviewerId2)

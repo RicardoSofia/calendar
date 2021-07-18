@@ -31,9 +31,9 @@ public class UserService implements InterviewCalendarService {
 
     public UserDTO createUser(UserDTO userDTO) throws NotFoundException {
         UserDb userDb = userMapper.mapUserDTOToUserDB(userDTO);
-        userRepository.save(userDb);
+        UserDb userSaved = userRepository.save(userDb);
 
-        return userMapper.mapUserDBToUserDTO(userDb);
+        return userMapper.mapUserDBToUserDTO(userSaved);
     }
 
     @Override
@@ -64,7 +64,7 @@ public class UserService implements InterviewCalendarService {
     }
 
     @Override
-    public void bookUserCalendarSlots(Integer userId, List<CalendarDTO> calendarDTOList)
+    public UserDTO bookUserCalendarSlots(Integer userId, List<CalendarDTO> calendarDTOList)
         throws NotFoundException {
         Optional<UserDb> userDb = userRepository.findById(userId);
 
@@ -78,12 +78,10 @@ public class UserService implements InterviewCalendarService {
             userDb1.getInterviewCalendar().add(calendarDb);
         });
 
-        userRepository.save(userDb1);
-    }
+        UserDTO userSavedDto = userMapper.mapUserDBToUserDTO(userRepository.save(userDb1));
 
-//    private static BiPredicate<CalendarDTO, List<CalendarDTO> equalsPredicate = (x, y) -> {
-//        return x.getDateTime().equals(y.getDateTime());
-//    };
+        return userSavedDto;
+    }
 
     private List<CalendarDTO> getInterviewersMatchingTimeslots(List<CalendarDTO> interviewer1, List<CalendarDTO> interviewer2) {
 
