@@ -1,6 +1,12 @@
 package com.api.calendar.testapi.test;
 
+import com.api.calendar.dto.InterviewerDto;
+import com.api.calendar.dto.UserDTO;
+import com.api.calendar.testapi.actions.UserActions;
+import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -12,13 +18,44 @@ import org.springframework.test.context.junit.jupiter.SpringExtension;
 public class PostInterviewerCalendarFT extends TestSourceUsers{
 
 
-    @Test
-    public void createInterviewerCalendarCompleteScheduleFT() {
-//        interviewerDtoCompleteValidTimeslots;
+    private static UserDTO userInesTest;
+    private static UserDTO userIngridTest;
+    private static InterviewerDto interviewerDtoCompleteValidTimeslots;
+    private static InterviewerDto interviewerDtoInvalidStartAndEndDate;
+    private static InterviewerDto interviewerDtoInversedDates;
+
+
+    @BeforeAll
+    public static void createUsersFT() throws Exception {
+        UserActions.clearUsers(200);
+        userInesTest = UserActions.createUser(userInesDTONoCalendar, 200);
+        userIngridTest = UserActions.createUser(userIngridDTO, 200);
+        interviewerDtoCompleteValidTimeslots = new InterviewerDto(userInesTest.getId(),"ines" , todayNoon, todayPlus4);
+        interviewerDtoInvalidStartAndEndDate = new InterviewerDto(userIngridTest.getId(), "ingrid" , todayNoonHalf, todayPlus4Half);
+        interviewerDtoInversedDates = new InterviewerDto(userIngridTest.getId(), "ingrid" , todayPlus4Half, todayNoonHalf);
+
     }
 
     @Test
-    public void createInterviewerCalendarIncompleteScheduleFT() {
-//        interviewerDtoInvalidStartAndEndDate;
+    public void createInterviewerCalendarCompleteScheduleFT() throws IOException {
+        UserActions.sendInterviewerSchedule(interviewerDtoCompleteValidTimeslots, 200 );
+        UserDTO interviewerUpdated = UserActions.getInterviewer(userInesTest.getId(), 200);
+
+        Assertions.assertEquals("ines", interviewerUpdated.getUserName());
+        Assertions.assertEquals(4, interviewerUpdated.getInterviewCalendar().size());
+    }
+
+    @Test
+    public void createInterviewerCalendarIncompleteScheduleFT() throws IOException {
+        UserActions.sendInterviewerSchedule(interviewerDtoInvalidStartAndEndDate, 200 );
+        UserDTO interviewerUpdated = UserActions.getInterviewer(userIngridTest.getId(), 200);
+
+        Assertions.assertEquals("ingrid", interviewerUpdated.getUserName());
+        Assertions.assertEquals(4, interviewerUpdated.getInterviewCalendar().size());
+    }
+
+    @Test
+    public void createInterviewerCalendarWrongDatesFT() throws IOException {
+        UserActions.sendInterviewerSchedule(interviewerDtoInversedDates, 200 );
     }
 }

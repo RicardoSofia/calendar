@@ -3,6 +3,7 @@ package com.api.calendar.testapi.util;
 public enum UserEndpointEnum {
     MAIN_URL("http://127.0.0.1:8080"),
     USER_ENDPOINT(MAIN_URL.getEndpoint() + "/interviewCalendar"),
+    SCHEDULE_ENDPOINT(MAIN_URL.getEndpoint() + "/scheduleCalendar"),
     USER_CREATION(USER_ENDPOINT.getEndpoint() + "/creation"),
     USER_CLEAR(USER_ENDPOINT.getEndpoint() + "/clear"),
     INTERVIEWER_ENDPOINT(USER_ENDPOINT.getEndpoint() + "/interviewer/%s"),

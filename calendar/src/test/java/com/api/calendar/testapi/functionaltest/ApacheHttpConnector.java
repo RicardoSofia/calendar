@@ -4,6 +4,7 @@ import static com.api.calendar.testapi.util.ObjectMappers.MAPPER_SIMPLE;
 import static java.nio.charset.StandardCharsets.UTF_8;
 import static org.springframework.test.util.AssertionErrors.assertEquals;
 
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.ByteArrayOutputStream;
@@ -208,5 +209,8 @@ public class ApacheHttpConnector {
         return MAPPER_SIMPLE.readValue(EntityUtils.toString(httpResponse.getEntity()), clazz);
     }
 
+    public static <T> T readResponse(HttpResponse httpResponse, TypeReference<T> typeRef) throws IOException {
+        return MAPPER_SIMPLE.readValue(EntityUtils.toString(httpResponse.getEntity()), typeRef);
+    }
 
 }

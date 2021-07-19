@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
-public class UserService implements InterviewCalendarService {
+public class UserService implements InterviewCalendarInterface {
 
     private final UserRepository userRepository;
     private final CalendarRepository calendarRepository;

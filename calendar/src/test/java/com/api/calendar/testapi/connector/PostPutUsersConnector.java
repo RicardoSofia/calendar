@@ -2,10 +2,12 @@ package com.api.calendar.testapi.connector;
 
 import static com.api.calendar.testapi.util.UserEndpointEnum.CANDIDATE_TIMESLOTS;
 import static com.api.calendar.testapi.util.UserEndpointEnum.INTERVIEWER_TIMESLOTS;
+import static com.api.calendar.testapi.util.UserEndpointEnum.SCHEDULE_ENDPOINT;
 import static com.api.calendar.testapi.util.UserEndpointEnum.USER_CLEAR;
 import static com.api.calendar.testapi.util.UserEndpointEnum.USER_CREATION;
 
 import com.api.calendar.dto.CalendarDTO;
+import com.api.calendar.dto.InterviewerDto;
 import com.api.calendar.dto.UserDTO;
 import com.api.calendar.testapi.functionaltest.ApacheHttpConnector;
 import java.io.IOException;
@@ -38,6 +40,11 @@ public class PostPutUsersConnector {
     public static HttpResponse postCandidateTimeslot(Integer userId, UserDTO userDto) throws IOException {
         String url = String.format(CANDIDATE_TIMESLOTS.getEndpoint(), userId);
         return new ApacheHttpConnector().httpPost(url, userDto);
+    }
+
+    public static HttpResponse postInterviewerSchedule(InterviewerDto interviewerDto) throws IOException {
+
+        return new ApacheHttpConnector().httpPost(SCHEDULE_ENDPOINT.getEndpoint(), interviewerDto);
     }
 
 

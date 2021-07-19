@@ -5,13 +5,9 @@ import com.api.calendar.dto.UserDTO;
 import java.util.List;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 
-public interface InterviewCalendarService {
-
-    UserDTO getUserById(Integer userId) throws NotFoundException;
+public interface InterviewCalendarInterface extends UserInterface{
 
     List<CalendarDTO> getUserCalendar(Integer userId);
-
-    void updateUser(UserDTO userDTO);
 
     UserDTO bookUserCalendarSlots(Integer userId, List<CalendarDTO> calendarDTOList)
         throws NotFoundException;

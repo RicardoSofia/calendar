@@ -25,7 +25,7 @@ public class PostUserTimeslotsFT extends TestSourceUsers{
         UserActions.clearUsers(200);
         userInesTest = UserActions.createUser(userInesDTO, 200);
         userIngridTest = UserActions.createUser(userIngridDTO, 200);
-        userCandidateTest = UserActions.createUser(userCandidateDTO, 200);
+        userCandidateTest = UserActions.createUser(userCandidateDTONoCalendar, 200);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class PostUserTimeslotsFT extends TestSourceUsers{
         List<CalendarDTO> usersCrossedAvailableTimeslots = UserActions
             .getUsersCrossedAvailableTimeslots(userInesTest.getId(), userIngridTest.getId(), 200);
         if(usersCrossedAvailableTimeslots.size() > 0) {
-            //The candidateDto already has the calendar timeslot
+            userCandidateTest.getInterviewCalendar().add(usersCrossedAvailableTimeslots.get(0));
             UserActions.sendCandidateTimeslot(userCandidateTest.getId(), userCandidateTest,200);
             UserDTO candidateDto = UserActions.getCandidate(userCandidateTest.getId(), 200);
 
@@ -60,7 +60,7 @@ public class PostUserTimeslotsFT extends TestSourceUsers{
             Assertions.assertNotNull(interviewCalendar);
             Assertions.assertEquals(1, interviewCalendar.size());
             Assertions.assertEquals(userCandidateDTO.getInterviewCalendar().get(0).getDateTime(),
-                interviewCalendar.get(0).getDateTime());
+                usersCrossedAvailableTimeslots.get(0).getDateTime());
         }
     }
 }

@@ -29,16 +29,16 @@ public abstract class TestSourceUsers {
 
     public static List<CalendarDTO>  calendarDTOList = Collections.singletonList(calendarDTO1);
     public static UserDTO userCandidateDTO = new UserDTO(3, "candidate", calendarDTOList);
+    public static UserDTO userCandidateDTONoCalendar = new UserDTO(3, "candidate", new ArrayList<>());
+    public static UserDTO userInesDTONoCalendar = new UserDTO(1,"ines", new ArrayList<>());
+
+
 
     public static UserDTO userIngridDTO = new UserDTO(2, "ingrid", calendarDTOList);
 
     public static LocalDateTime todayPlus4 = todayNoon.plusHours(4);
-    public static InterviewerDto interviewerDtoCompleteValidTimeslots = new InterviewerDto("ines" , todayNoon, todayPlus4);
 
     public static LocalDateTime todayNoonHalf = todayNoon.plusMinutes(30);
     public static LocalDateTime todayPlus4Half = todayNoonHalf.plusHours(4);
-
-
-    public static InterviewerDto interviewerDtoInvalidStartAndEndDate = new InterviewerDto("ines" , todayNoonHalf, todayPlus4Half);
 
 }

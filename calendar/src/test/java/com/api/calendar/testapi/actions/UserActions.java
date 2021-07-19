@@ -2,6 +2,7 @@ package com.api.calendar.testapi.actions;
 
 
 import com.api.calendar.dto.CalendarDTO;
+import com.api.calendar.dto.InterviewerDto;
 import com.api.calendar.dto.UserDTO;
 import com.api.calendar.testapi.connector.GetUsersConnector;
 import com.api.calendar.testapi.connector.PostPutUsersConnector;
@@ -12,7 +13,7 @@ import java.util.List;
 import org.apache.http.HttpResponse;
 import org.junit.platform.commons.logging.Logger;
 import org.junit.platform.commons.logging.LoggerFactory;
-
+import com.fasterxml.jackson.core.type.TypeReference;
 public class UserActions extends TestSourceUsers {
 
     private static final List<Integer> EXPECT_ERROR_STATUS_LIST = List.of(400, 402, 404, 422, 500);
@@ -73,7 +74,7 @@ public class UserActions extends TestSourceUsers {
 
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) return null;
 
-        return ApacheHttpConnector.readResponse(httpResponse, List.class);
+        return ApacheHttpConnector.readResponse(httpResponse, new TypeReference<>() {});
     }
 
     public static List<CalendarDTO> getUsersCrossedAvailableTimeslots( Integer userId, Integer userId2, Integer expectedStatus) throws IOException {
@@ -82,7 +83,7 @@ public class UserActions extends TestSourceUsers {
 
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) return null;
 
-        return ApacheHttpConnector.readResponse(httpResponse, List.class);
+        return ApacheHttpConnector.readResponse(httpResponse, new TypeReference<>() {});
     }
 
     public static void updateInterviewerWithTimeslots(Integer userId, UserDTO userDTO, Integer expectedStatus)
@@ -118,4 +119,13 @@ public class UserActions extends TestSourceUsers {
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) throw new IOException("Error status" + expectedStatus);
     }
 
+    public static void sendInterviewerSchedule(InterviewerDto interviewerDto, Integer expectedStatus) throws IOException {
+
+        HttpResponse httpResponse = PostPutUsersConnector.postInterviewerSchedule(interviewerDto);
+        ApacheHttpConnector.validateStatus(expectedStatus, httpResponse);
+
+
+        if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) throw new IOException("Error status" + expectedStatus);
+
+    }
 }
