@@ -63,7 +63,7 @@ public class SwaggerConfig {
                 "<p>4 - If you need to register a new user please contact our support team.</p>" +
                 "<p>5 - You will find more information in each Dto/Endpoint documentation.</p>";
         String version = "0.0.1";
-        Contact contact = new Contact("Challenge", "https://www.meuteste.com/contact-us", "meuteste@teste.com");
+        Contact contact = new Contact("Challenge", "https://www.myteste.com/contact-us", "myteste@teste.com");
 
         return new ApiInfo(title, description, version, null, contact, null, null,
             Collections.emptyList());
