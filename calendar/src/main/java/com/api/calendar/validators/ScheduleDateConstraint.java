@@ -10,7 +10,7 @@ import javax.validation.Payload;
 
 @Documented
 @Constraint(validatedBy = ScheduleDateValidator.class)
-@Target( { ElementType.TYPE })
+@Target( { ElementType.TYPE, ElementType.METHOD, ElementType.CONSTRUCTOR })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ScheduleDateConstraint {
 
