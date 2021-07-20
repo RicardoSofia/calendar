@@ -1,8 +1,8 @@
 package com.api.calendar.service;
 
 
-import static com.api.calendar.validators.PredicateUtils.formatEndDate;
-import static com.api.calendar.validators.PredicateUtils.formatStartDate;
+import static com.api.calendar.validators.FunctionUtils.formatEndDate;
+import static com.api.calendar.validators.FunctionUtils.formatStartDate;
 import static com.api.calendar.validators.PredicateUtils.localDateIsValidMinute;
 import static com.api.calendar.validators.PredicateUtils.localDateTimeLocalDateTimeBiPredicate;
 
