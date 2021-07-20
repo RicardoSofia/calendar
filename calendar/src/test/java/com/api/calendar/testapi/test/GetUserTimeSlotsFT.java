@@ -1,7 +1,7 @@
 package com.api.calendar.testapi.test;
 
-import com.api.calendar.dto.CalendarDTO;
-import com.api.calendar.dto.UserDTO;
+import com.api.calendar.data.dto.CalendarTimeslotDTO;
+import com.api.calendar.data.dto.UserDTO;
 import com.api.calendar.testapi.actions.UserActions;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
@@ -42,7 +42,7 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
     @Test
     public void getCandidateBookedTimeslotFT() throws Exception {
 
-        CalendarDTO candidateBookedTimeslot = userActions.getCandidateBookedTimeslot(userCandidateTest.getId(), 200);
+        CalendarTimeslotDTO candidateBookedTimeslot = userActions.getCandidateBookedTimeslot(userCandidateTest.getId(), 200);
 
         Assertions.assertNotNull(candidateBookedTimeslot);
 
@@ -59,7 +59,7 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
     @Test
     public void getInterviewerTimeslotsFT() throws Exception {
 
-        List<CalendarDTO> userAvailableTimeslots = userActions.getInterviewerAvailableTimeslots(userInesTest.getId(), 200);
+        List<CalendarTimeslotDTO> userAvailableTimeslots = userActions.getInterviewerAvailableTimeslots(userInesTest.getId(), 200);
 
         Assertions.assertEquals(3, userAvailableTimeslots.size());
 
@@ -67,7 +67,7 @@ public class GetUserTimeSlotsFT extends TestSourceUsers{
 
     @Test
     public void getInterviewersCrossedAvaliableTimeslotsFT() throws Exception {
-        List<CalendarDTO> userAvailableTimeslots = userActions.getUsersCrossedAvailableTimeslots(userInesTest.getId(), userIngridTest.getId(), 200);
+        List<CalendarTimeslotDTO> userAvailableTimeslots = userActions.getUsersCrossedAvailableTimeslots(userInesTest.getId(), userIngridTest.getId(), 200);
 
         Assertions.assertEquals(1, userAvailableTimeslots.size());
     }

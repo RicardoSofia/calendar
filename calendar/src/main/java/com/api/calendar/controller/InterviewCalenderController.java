@@ -1,14 +1,13 @@
 package com.api.calendar.controller;
 
-import com.api.calendar.dto.CalendarDTO;
-import com.api.calendar.dto.UserDTO;
+import com.api.calendar.data.dto.CalendarTimeslotDTO;
+import com.api.calendar.data.dto.UserDTO;
 import com.api.calendar.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import java.util.List;
 import lombok.AllArgsConstructor;
-import org.mapstruct.control.MappingControl.Use;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -85,8 +84,8 @@ public class InterviewCalenderController {
         @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("/candidate/{candidateId}/timeslots")
-    public ResponseEntity<CalendarDTO> getCandidateBookedTimeslot(@PathVariable Integer candidateId) {
-        List<CalendarDTO> userCalendar = userService.getUserCalendar(candidateId);
+    public ResponseEntity<CalendarTimeslotDTO> getCandidateBookedTimeslot(@PathVariable Integer candidateId) {
+        List<CalendarTimeslotDTO> userCalendar = userService.getUserCalendar(candidateId);
         return ResponseEntity.ok(userCalendar.get(0));
     }
 
@@ -117,8 +116,8 @@ public class InterviewCalenderController {
         @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("/interviewer/{interviewerId}/timeslots")
-    public ResponseEntity<List<CalendarDTO>> getInterviewerTimeslots(@PathVariable Integer interviewerId) {
-        List<CalendarDTO> userCalendar = userService.getUserCalendar(interviewerId);
+    public ResponseEntity<List<CalendarTimeslotDTO>> getInterviewerTimeslots(@PathVariable Integer interviewerId) {
+        List<CalendarTimeslotDTO> userCalendar = userService.getUserCalendar(interviewerId);
         return ResponseEntity.ok(userCalendar);
     }
 
@@ -132,8 +131,8 @@ public class InterviewCalenderController {
         @ApiResponse(code = 500, message = "Internal server error")
     })
     @GetMapping("/interviewer/{interviewerId}/{interviewerId2}/crossedTimeslots")
-    public ResponseEntity<List<CalendarDTO>> getInterviewersCrossedTimeslots(@PathVariable Integer interviewerId, @PathVariable Integer interviewerId2) {
-        List<CalendarDTO> usersCrossedCalendar = userService
+    public ResponseEntity<List<CalendarTimeslotDTO>> getInterviewersCrossedTimeslots(@PathVariable Integer interviewerId, @PathVariable Integer interviewerId2) {
+        List<CalendarTimeslotDTO> usersCrossedCalendar = userService
             .getUsersCrossedCalendar(interviewerId, interviewerId2);
 
         return ResponseEntity.ok(usersCrossedCalendar);
@@ -164,7 +163,7 @@ public class InterviewCalenderController {
         @ApiResponse(code = 500, message = "Internal server error")
     })
     @PutMapping("/interviewer/{interviewerId}/timeslots")
-    public ResponseEntity updateInterviewerPut(@PathVariable Integer interviewerId, @RequestBody List<CalendarDTO> calendarDTOList)
+    public ResponseEntity updateInterviewerPut(@PathVariable Integer interviewerId, @RequestBody List<CalendarTimeslotDTO> calendarDTOList)
         throws NotFoundException {
         return ResponseEntity.ok(userService.bookUserCalendarSlots(interviewerId, calendarDTOList));
     }

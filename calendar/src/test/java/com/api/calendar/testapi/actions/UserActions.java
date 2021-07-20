@@ -1,9 +1,9 @@
 package com.api.calendar.testapi.actions;
 
 
-import com.api.calendar.dto.CalendarDTO;
-import com.api.calendar.dto.InterviewerDto;
-import com.api.calendar.dto.UserDTO;
+import com.api.calendar.data.dto.CalendarTimeslotDTO;
+import com.api.calendar.data.dto.InterviewerScheduleDto;
+import com.api.calendar.data.dto.UserDTO;
 import com.api.calendar.testapi.connector.GetUsersConnector;
 import com.api.calendar.testapi.connector.PostPutUsersConnector;
 import com.api.calendar.testapi.functionaltest.ApacheHttpConnector;
@@ -47,13 +47,13 @@ public class UserActions extends TestSourceUsers {
         return ApacheHttpConnector.readResponse(httpResponse, UserDTO.class);
     }
 
-    public static CalendarDTO getCandidateBookedTimeslot(Integer userId, Integer expectedStatus) throws IOException {
+    public static CalendarTimeslotDTO getCandidateBookedTimeslot(Integer userId, Integer expectedStatus) throws IOException {
         HttpResponse httpResponse = GetUsersConnector.getCandidateBookedTimeslot(userId);
         ApacheHttpConnector.validateStatus(expectedStatus, httpResponse);
 
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) return null;
 
-        return ApacheHttpConnector.readResponse(httpResponse, CalendarDTO.class);
+        return ApacheHttpConnector.readResponse(httpResponse, CalendarTimeslotDTO.class);
     }
 
     public static UserDTO getInterviewer(Integer userId, Integer expectedStatus) throws IOException {
@@ -66,7 +66,7 @@ public class UserActions extends TestSourceUsers {
         return ApacheHttpConnector.readResponse(httpResponse, UserDTO.class);
     }
 
-    public static List<CalendarDTO> getInterviewerAvailableTimeslots(Integer userId, Integer expectedStatus)
+    public static List<CalendarTimeslotDTO> getInterviewerAvailableTimeslots(Integer userId, Integer expectedStatus)
         throws Exception {
 
         HttpResponse httpResponse = GetUsersConnector.getInterviewerTimeslots(userId);
@@ -77,7 +77,7 @@ public class UserActions extends TestSourceUsers {
         return ApacheHttpConnector.readResponse(httpResponse, new TypeReference<>() {});
     }
 
-    public static List<CalendarDTO> getUsersCrossedAvailableTimeslots( Integer userId, Integer userId2, Integer expectedStatus) throws IOException {
+    public static List<CalendarTimeslotDTO> getUsersCrossedAvailableTimeslots( Integer userId, Integer userId2, Integer expectedStatus) throws IOException {
         HttpResponse httpResponse = GetUsersConnector.getInterviewersCrossedTimeslots(userId, userId2);
         ApacheHttpConnector.validateStatus(expectedStatus, httpResponse);
 
@@ -96,7 +96,7 @@ public class UserActions extends TestSourceUsers {
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) throw new IOException("Error status" + expectedStatus);
     }
 
-    public static UserDTO updateInterviewerWithTimeslotsById(Integer userId, List<CalendarDTO> calendarDto, Integer expectedStatus)
+    public static UserDTO updateInterviewerWithTimeslotsById(Integer userId, List<CalendarTimeslotDTO> calendarDto, Integer expectedStatus)
         throws IOException {
 
         HttpResponse httpResponse = PostPutUsersConnector
@@ -119,9 +119,10 @@ public class UserActions extends TestSourceUsers {
         if (EXPECT_ERROR_STATUS_LIST.contains(expectedStatus)) throw new IOException("Error status" + expectedStatus);
     }
 
-    public static void sendInterviewerSchedule(InterviewerDto interviewerDto, Integer expectedStatus) throws IOException {
+    public static void sendInterviewerSchedule(InterviewerScheduleDto interviewerScheduleDto, Integer expectedStatus) throws IOException {
 
-        HttpResponse httpResponse = PostPutUsersConnector.postInterviewerSchedule(interviewerDto);
+        HttpResponse httpResponse = PostPutUsersConnector.postInterviewerSchedule(
+            interviewerScheduleDto);
         ApacheHttpConnector.validateStatus(expectedStatus, httpResponse);
 
 

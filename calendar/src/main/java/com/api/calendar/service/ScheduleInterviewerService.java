@@ -6,12 +6,13 @@ import static com.api.calendar.validators.PredicateUtils.formatStartDate;
 import static com.api.calendar.validators.PredicateUtils.localDateIsValidMinute;
 import static com.api.calendar.validators.PredicateUtils.localDateTimeLocalDateTimeBiPredicate;
 
-import com.api.calendar.dto.CalendarDTO;
-import com.api.calendar.dto.InterviewerDto;
-import com.api.calendar.dto.UserDTO;
-import com.api.calendar.entity.UserDb;
-import com.api.calendar.mappers.UserMapper;
+import com.api.calendar.data.dto.CalendarTimeslotDTO;
+import com.api.calendar.data.dto.InterviewerScheduleDto;
+import com.api.calendar.data.dto.UserDTO;
+import com.api.calendar.data.entity.UserDb;
+import com.api.calendar.data.mappers.UserMapper;
 import com.api.calendar.repository.UserRepository;
+import com.api.calendar.service.interfaces.ScheduleCalendarInterface;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -28,9 +29,9 @@ public class ScheduleInterviewerService implements ScheduleCalendarInterface {
     private UserRepository userRepository;
     private UserMapper userMapper;
 
-    private List<CalendarDTO> getTimeslotsFromRangeDate(LocalDateTime startDateTime, LocalDateTime endDateTime) {
+    private List<CalendarTimeslotDTO> getTimeslotsFromRangeDate(LocalDateTime startDateTime, LocalDateTime endDateTime) {
 
-        List<CalendarDTO> listCalendarDto = new ArrayList<>();
+        List<CalendarTimeslotDTO> listCalendarDto = new ArrayList<>();
 
         if(!localDateIsValidMinute.test(startDateTime.getMinute())) {
             startDateTime = formatStartDate.apply(startDateTime);
@@ -42,7 +43,7 @@ public class ScheduleInterviewerService implements ScheduleCalendarInterface {
 
 
         while(localDateTimeLocalDateTimeBiPredicate.test(startDateTime, endDateTime)) {
-            CalendarDTO calendarDTO1 = new CalendarDTO(null, Timestamp.valueOf(startDateTime));
+            CalendarTimeslotDTO calendarDTO1 = new CalendarTimeslotDTO(null, Timestamp.valueOf(startDateTime));
             listCalendarDto.add(calendarDTO1);
             startDateTime = startDateTime.withHour(startDateTime.getHour() + 1);
         }
@@ -51,13 +52,13 @@ public class ScheduleInterviewerService implements ScheduleCalendarInterface {
     }
 
     @Override
-    public void ScheduleInterviewerTimeslots(InterviewerDto interviewerDto)
+    public void ScheduleInterviewerTimeslots(InterviewerScheduleDto interviewerScheduleDto)
         throws NotFoundException {
 
-        List<CalendarDTO> timeslotsFromRangeDate = getTimeslotsFromRangeDate(
-            interviewerDto.getStartCalendar(), interviewerDto.getEndCalendar());
+        List<CalendarTimeslotDTO> timeslotsFromRangeDate = getTimeslotsFromRangeDate(
+            interviewerScheduleDto.getStartCalendar(), interviewerScheduleDto.getEndCalendar());
 
-        UserDTO userDTO = getUserById(interviewerDto.getId());
+        UserDTO userDTO = getUserById(interviewerScheduleDto.getId());
 
         userDTO.getInterviewCalendar().addAll(timeslotsFromRangeDate);
 

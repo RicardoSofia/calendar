@@ -1,13 +1,14 @@
 package com.api.calendar.service;
 
-import com.api.calendar.dto.CalendarDTO;
-import com.api.calendar.dto.UserDTO;
-import com.api.calendar.entity.CalendarDb;
-import com.api.calendar.entity.UserDb;
-import com.api.calendar.mappers.CalendarMapper;
-import com.api.calendar.mappers.UserMapper;
+import com.api.calendar.data.dto.CalendarTimeslotDTO;
+import com.api.calendar.data.dto.UserDTO;
+import com.api.calendar.data.entity.CalendarTimeslotDb;
+import com.api.calendar.data.entity.UserDb;
+import com.api.calendar.data.mappers.CalendarMapper;
+import com.api.calendar.data.mappers.UserMapper;
 import com.api.calendar.repository.CalendarRepository;
 import com.api.calendar.repository.UserRepository;
+import com.api.calendar.service.interfaces.InterviewCalendarInterface;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -45,12 +46,10 @@ public class UserService implements InterviewCalendarInterface {
         return userMapper.mapUserDBToUserDTO(userDb1);
     }
 
-
-
     @Override
-    public List<CalendarDTO> getUserCalendar(Integer userId) {
+    public List<CalendarTimeslotDTO> getUserCalendar(Integer userId) {
 
-        List<CalendarDb> interviewCalendarById = calendarRepository
+        List<CalendarTimeslotDb> interviewCalendarById = calendarRepository
             .getInterviewCalendarById(userId);
 
         return calendarMapper.mapListCalendarDBToListCalendarDTO(interviewCalendarById);
@@ -64,16 +63,16 @@ public class UserService implements InterviewCalendarInterface {
     }
 
     @Override
-    public UserDTO bookUserCalendarSlots(Integer userId, List<CalendarDTO> calendarDTOList)
+    public UserDTO bookUserCalendarSlots(Integer userId, List<CalendarTimeslotDTO> calendarDTOList)
         throws NotFoundException {
         Optional<UserDb> userDb = userRepository.findById(userId);
 
         UserDb userDb1 = userDb.orElseThrow(NotFoundException::new);
 
-        List<CalendarDb> calendarDbs = calendarMapper
+        List<CalendarTimeslotDb> calendarTimeslotDbs = calendarMapper
             .mapListCalendarDTOToListCalendarDB(calendarDTOList);
 
-        calendarDbs.forEach(calendarDb -> {
+        calendarTimeslotDbs.forEach(calendarDb -> {
             calendarDb.setUser(userDb1);
             userDb1.getInterviewCalendar().add(calendarDb);
         });
@@ -83,27 +82,23 @@ public class UserService implements InterviewCalendarInterface {
         return userSavedDto;
     }
 
-    private List<CalendarDTO> getInterviewersMatchingTimeslots(List<CalendarDTO> interviewer1, List<CalendarDTO> interviewer2) {
-
-        List<CalendarDTO> collect = interviewer1.stream().filter(int2 -> interviewer2.stream()
-            .anyMatch(int1 -> int1.getDateTime().equals(int2.getDateTime())))
-            .collect(Collectors.toList());
-
-        return collect;
-    }
-
     @Override
-    public List<CalendarDTO> getUsersCrossedCalendar(Integer interviewerId1, Integer interviewerId2) {
-        List<CalendarDTO> interviewer1 = getUserCalendar(interviewerId1);
-        List<CalendarDTO> interviewer2 = getUserCalendar(interviewerId2);
+    public List<CalendarTimeslotDTO> getUsersCrossedCalendar(Integer interviewerId1, Integer interviewerId2) {
+        List<CalendarTimeslotDTO> interviewer1 = getUserCalendar(interviewerId1);
+        List<CalendarTimeslotDTO> interviewer2 = getUserCalendar(interviewerId2);
 
-        List<CalendarDTO> interviewersMatchingTimeslots = getInterviewersMatchingTimeslots(
+        List<CalendarTimeslotDTO> interviewersMatchingTimeslots = getInterviewersMatchingTimeslots(
             interviewer1, interviewer2);
 
         return interviewersMatchingTimeslots;
     }
 
+    private List<CalendarTimeslotDTO> getInterviewersMatchingTimeslots(List<CalendarTimeslotDTO> interviewer1, List<CalendarTimeslotDTO> interviewer2) {
 
+        List<CalendarTimeslotDTO> collect = interviewer1.stream().filter(int2 -> interviewer2.stream()
+            .anyMatch(int1 -> int1.getDateTime().equals(int2.getDateTime())))
+            .collect(Collectors.toList());
 
-
+        return collect;
+    }
 }

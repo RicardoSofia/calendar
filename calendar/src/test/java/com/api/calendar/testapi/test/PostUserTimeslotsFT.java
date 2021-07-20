@@ -1,7 +1,7 @@
 package com.api.calendar.testapi.test;
 
-import com.api.calendar.dto.CalendarDTO;
-import com.api.calendar.dto.UserDTO;
+import com.api.calendar.data.dto.CalendarTimeslotDTO;
+import com.api.calendar.data.dto.UserDTO;
 import com.api.calendar.testapi.actions.UserActions;
 import java.io.IOException;
 import java.util.List;
@@ -49,14 +49,14 @@ public class PostUserTimeslotsFT extends TestSourceUsers{
 
     @Test
     void sendCandidateTimeslotValidTimeslotFT() throws IOException {
-        List<CalendarDTO> usersCrossedAvailableTimeslots = UserActions
+        List<CalendarTimeslotDTO> usersCrossedAvailableTimeslots = UserActions
             .getUsersCrossedAvailableTimeslots(userInesTest.getId(), userIngridTest.getId(), 200);
         if(usersCrossedAvailableTimeslots.size() > 0) {
             userCandidateTest.getInterviewCalendar().add(usersCrossedAvailableTimeslots.get(0));
             UserActions.sendCandidateTimeslot(userCandidateTest.getId(), userCandidateTest,200);
             UserDTO candidateDto = UserActions.getCandidate(userCandidateTest.getId(), 200);
 
-            List<CalendarDTO> interviewCalendar = candidateDto.getInterviewCalendar();
+            List<CalendarTimeslotDTO> interviewCalendar = candidateDto.getInterviewCalendar();
             Assertions.assertNotNull(interviewCalendar);
             Assertions.assertEquals(1, interviewCalendar.size());
             Assertions.assertEquals(userCandidateDTO.getInterviewCalendar().get(0).getDateTime(),

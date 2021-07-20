@@ -1,6 +1,6 @@
 package com.api.calendar.controller;
 
-import com.api.calendar.dto.InterviewerDto;
+import com.api.calendar.data.dto.InterviewerScheduleDto;
 import com.api.calendar.service.ScheduleInterviewerService;
 import com.api.calendar.service.UserService;
 import io.swagger.annotations.ApiOperation;
@@ -10,12 +10,9 @@ import javax.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.crossstore.ChangeSetPersister.NotFoundException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -36,10 +33,10 @@ public class InterviewerScheduleCalendarController {
         @ApiResponse(code = 500, message = "Internal server error")
     })
     @PostMapping
-    public ResponseEntity postInterviewerSchedule(@RequestBody @Valid InterviewerDto interviewerDto)
+    public ResponseEntity postInterviewerSchedule(@RequestBody @Valid InterviewerScheduleDto interviewerScheduleDto)
         throws NotFoundException {
 
-        scheduleInterviewerService.ScheduleInterviewerTimeslots(interviewerDto);
+        scheduleInterviewerService.ScheduleInterviewerTimeslots(interviewerScheduleDto);
         return ResponseEntity.ok().build();
     }
 

@@ -6,9 +6,9 @@ import static com.api.calendar.testapi.util.UserEndpointEnum.SCHEDULE_ENDPOINT;
 import static com.api.calendar.testapi.util.UserEndpointEnum.USER_CLEAR;
 import static com.api.calendar.testapi.util.UserEndpointEnum.USER_CREATION;
 
-import com.api.calendar.dto.CalendarDTO;
-import com.api.calendar.dto.InterviewerDto;
-import com.api.calendar.dto.UserDTO;
+import com.api.calendar.data.dto.CalendarTimeslotDTO;
+import com.api.calendar.data.dto.InterviewerScheduleDto;
+import com.api.calendar.data.dto.UserDTO;
 import com.api.calendar.testapi.functionaltest.ApacheHttpConnector;
 import java.io.IOException;
 import java.util.List;
@@ -32,7 +32,7 @@ public class PostPutUsersConnector {
         return new ApacheHttpConnector().httpPost(url, interviewerDto);
     }
 
-    public static HttpResponse putInterviewerTimeslots(Integer userId, List<CalendarDTO> calendarDTOList) throws IOException {
+    public static HttpResponse putInterviewerTimeslots(Integer userId, List<CalendarTimeslotDTO> calendarDTOList) throws IOException {
         String url = String.format(INTERVIEWER_TIMESLOTS.getEndpoint(), userId);
         return new ApacheHttpConnector().httpPut(url, calendarDTOList);
     }
@@ -42,9 +42,11 @@ public class PostPutUsersConnector {
         return new ApacheHttpConnector().httpPost(url, userDto);
     }
 
-    public static HttpResponse postInterviewerSchedule(InterviewerDto interviewerDto) throws IOException {
+    public static HttpResponse postInterviewerSchedule(
+        InterviewerScheduleDto interviewerScheduleDto) throws IOException {
 
-        return new ApacheHttpConnector().httpPost(SCHEDULE_ENDPOINT.getEndpoint(), interviewerDto);
+        return new ApacheHttpConnector().httpPost(SCHEDULE_ENDPOINT.getEndpoint(),
+            interviewerScheduleDto);
     }
 
 

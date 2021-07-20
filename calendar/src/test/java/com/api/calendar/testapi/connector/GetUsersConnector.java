@@ -6,7 +6,6 @@ import static com.api.calendar.testapi.util.UserEndpointEnum.INTERVIEWER_CROSSED
 import static com.api.calendar.testapi.util.UserEndpointEnum.INTERVIEWER_ENDPOINT;
 import static com.api.calendar.testapi.util.UserEndpointEnum.INTERVIEWER_TIMESLOTS;
 
-import com.api.calendar.dto.UserDTO;
 import com.api.calendar.testapi.functionaltest.ApacheHttpConnector;
 import java.io.IOException;
 import org.apache.http.HttpResponse;
